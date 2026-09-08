@@ -1,0 +1,79 @@
+/**
+ * tiny-typed-env brand tokens
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root {
+  --tte-ink: #0b1220;
+  --tte-ink-soft: #1a2438;
+  --tte-paper: #f4f7f8;
+  --tte-mist: #e8eef0;
+  --tte-teal: #0f766e;
+  --tte-teal-bright: #14b8a6;
+  --tte-mint: #5eead4;
+  --tte-fog: #94a3b8;
+
+  --ifm-color-primary: #0f766e;
+  --ifm-color-primary-dark: #0d6660;
+  --ifm-color-primary-darker: #0c5f59;
+  --ifm-color-primary-darkest: #0a4e4a;
+  --ifm-color-primary-light: #12867d;
+  --ifm-color-primary-lighter: #148d84;
+  --ifm-color-primary-lightest: #19a399;
+  --ifm-font-family-base: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --ifm-font-family-monospace: 'IBM Plex Mono', ui-monospace, monospace;
+  --ifm-heading-font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --ifm-code-font-size: 90%;
+  --ifm-navbar-background-color: rgba(244, 247, 248, 0.86);
+  --ifm-footer-background-color: #0b1220;
+  --ifm-hero-background-color: transparent;
+  --docusaurus-highlighted-code-line-bg: rgba(15, 118, 110, 0.12);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #2dd4bf;
+  --ifm-color-primary-dark: #14b8a6;
+  --ifm-color-primary-darker: #0d9488;
+  --ifm-color-primary-darkest: #0f766e;
+  --ifm-color-primary-light: #5eead4;
+  --ifm-color-primary-lighter: #99f6e4;
+  --ifm-color-primary-lightest: #ccfbf1;
+  --ifm-navbar-background-color: rgba(11, 18, 32, 0.9);
+  --ifm-footer-background-color: #070b14;
+  --docusaurus-highlighted-code-line-bg: rgba(45, 212, 191, 0.15);
+}
+
+.navbar {
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid color-mix(in srgb, var(--tte-fog) 35%, transparent);
+  box-shadow: none;
+}
+
+.navbar__title {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.footer--dark {
+  background: linear-gradient(180deg, #0b1220 0%, #070b14 100%);
+}
+
+.footer__title {
+  font-family: var(--ifm-heading-font-family);
+  letter-spacing: -0.02em;
+}
+
+.button {
+  border-radius: 0.45rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.hero--primary {
+  --ifm-hero-text-color: var(--tte-ink);
+}
+
+[data-theme='dark'] .hero--primary {
+  --ifm-hero-text-color: #ecfdf5;
+}

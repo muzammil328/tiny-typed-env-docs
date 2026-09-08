@@ -1,0 +1,41 @@
+---
+sidebar_position: 1
+slug: /
+title: Introduction
+---
+
+# tiny-typed-env
+
+Tiny typed environment loader. **No Zod required.** Also works with Zod, Valibot, and ArkType via [Standard Schema](https://standardschema.dev).
+
+Works in **Node**, **Bun**, **Deno**, and **Workers**.
+
+## Why
+
+- Built-in `s` helpers — zero extra packages
+- Fail at boot with clear error messages
+- Full TypeScript inference
+- Optional Zod / Valibot / ArkType via Standard Schema
+- Runtime-agnostic core (`loadEnv`) plus Node helper (`createEnv`)
+
+## Quick example
+
+```ts
+import { createEnv, s } from "tiny-typed-env/node";
+
+export const env = createEnv({
+  DATABASE_URL: s.url(),
+  PORT: s.port({ default: 3000 }),
+  DEBUG: s.boolean({ default: false }),
+});
+
+env.PORT; // number
+```
+
+## Next steps
+
+- [Getting Started](./getting-started) — install and first schema
+- [Schema helpers](./schema) — full `s.*` reference
+- [API](./api) — `loadEnv`, `createEnv`, options
+- [Zod / Valibot / ArkType](./external-schemas) — optional schema libraries
+- [Examples](./examples) — copy-paste app template
