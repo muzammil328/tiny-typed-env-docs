@@ -19,7 +19,7 @@ Node **18+** is required.
 ```ts
 import { createEnv, s } from "tiny-typed-env/node";
 
-export const env = createEnv({
+export const schema = {
   DATABASE_URL: s.url(),
   PORT: s.port({ default: 3000 }),
   NODE_ENV: s.enum(["development", "test", "production"], {
@@ -27,7 +27,9 @@ export const env = createEnv({
   }),
   DEBUG: s.boolean({ default: false }),
   API_KEY: s.string({ min: 8 }),
-});
+};
+
+export const env = createEnv(schema);
 
 env.PORT; // number
 env.DATABASE_URL; // string
@@ -44,6 +46,20 @@ Invalid environment variables:
 Fix your .env file or the host environment, then restart.
 ```
 
+Secret-looking keys (`API_KEY`, `TOKEN`, `*_KEY`, …) never print the raw value—only the failure reason.
+
+## CLI
+
+Export `schema` (as above), then:
+
+```bash
+npx tiny-typed-env check              # validate env, exit 1 on failure
+npx tiny-typed-env example            # write .env.example from schema
+npx tiny-typed-env example --print    # print to stdout
+```
+
+See [CLI](./cli) for options and discovery rules.
+
 ## Choose your entrypoint
 
 | Import | Use when |
@@ -53,6 +69,8 @@ Fix your .env file or the host environment, then restart.
 
 ## Next
 
+- [CLI](./cli) — validate and generate `.env.example`
+- [Nested groups](./nested-groups) — `env.server.*` / `env.public.*`
 - [Schema helpers](./schema) — every `s.*` option
-- [API reference](./api) — `loadEnv`, `safeLoadEnv`, `createEnv`
+- [API reference](./api) — `loadEnv`, `createEnv`, options
 - [External schemas](./external-schemas) — Zod, Valibot, ArkType

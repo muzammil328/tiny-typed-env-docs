@@ -16,7 +16,7 @@ const FeatureList: FeatureItem[] = [
     description: (
       <>
         Built-in <code>s</code> helpers—no Zod required—with full TypeScript
-        inference for every variable.
+        inference, nested groups, <code>duration</code>, and <code>bytes</code>.
       </>
     ),
   },
@@ -31,12 +31,12 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: 'Fail-fast',
+    title: 'Fail-fast + CLI',
     label: '03',
     description: (
       <>
-        Missing or invalid variables stop the process at boot with a clear,
-        actionable error list.
+        Invalid env stops the process at boot (secrets redacted). Use{' '}
+        <code>npx tiny-typed-env check</code> in CI.
       </>
     ),
   },

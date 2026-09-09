@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 6
 title: API
 sidebar_label: API
 ---
@@ -12,7 +12,7 @@ No `fs`. Pass values yourself. Use this on Cloudflare Workers, Deno Deploy, brow
 
 ### `loadEnv(schema, options?)`
 
-Validates and returns a typed object. Throws `EnvError` on failure.
+Validates and returns a typed object. Throws `EnvError` on failure. Supports flat schemas and [nested groups](./nested-groups).
 
 ```ts
 import { loadEnv, s } from "tiny-typed-env";
@@ -36,7 +36,7 @@ const result = safeLoadEnv(
 );
 
 if (!result.ok) {
-  // result.issues — list of problems
+  // result.error — EnvError with issues
 } else {
   // result.data
 }
@@ -48,13 +48,13 @@ if (!result.ok) {
 |---|---|---|
 | `runtimeEnv` | — | Object of string (or undefined) values to validate |
 | `emptyAsUndefined` | `true` | Treat `""` as missing |
-| `skipValidation` | `false` | Skip checks (Docker/CI builds without real secrets); returns runtime env cast to the typed shape |
+| `skipValidation` | `false` | Skip checks (Docker/CI builds without real secrets); returns values shaped like the schema |
 
-Also exported: `s`, `EnvError`, `formatIssues`, `isSecretKey`, `redactIssueMessage`, `parseEnvFile`, `exampleEnv`.
+Also exported: `s`, `parseDuration`, `parseBytes`, `EnvError`, `formatIssues`, `isSecretKey`, `redactIssueMessage`, `parseEnvFile`, `exampleEnv`, `flattenSchemaKeys`, `isStandardSchema`, `isSchemaGroup`.
 
 ### `exampleEnv(schemaOrKeys)`
 
-Build a `.env.example` body from a schema object or a string list:
+Build a `.env.example` body from a schema object or a string list. Nested groups are flattened to leaf env keys:
 
 ```ts
 import { exampleEnv, s } from "tiny-typed-env";
@@ -63,12 +63,21 @@ exampleEnv({ DATABASE_URL: s.url(), PORT: s.port() });
 // DATABASE_URL=
 // PORT=
 
+exampleEnv({
+  server: { DATABASE_URL: s.url() },
+  public: { APP_URL: s.url() },
+});
+// DATABASE_URL=
+// APP_URL=
+
 exampleEnv(["DATABASE_URL", "PORT"]);
 ```
 
 ### Secret redaction
 
-Keys matching `API_KEY`, `SECRET`, `TOKEN`, `PASSWORD`, and similar never print the secret value in boot errors—only the failure reason.
+Keys matching `API_KEY`, `SECRET`, `TOKEN`, `PASSWORD`, `*_KEY`, and similar **never** print the secret value in boot errors—only the failure reason (e.g. `Required`, `Must be at least 8 characters`).
+
+Helpers: `isSecretKey(key)`, `redactIssueMessage(key, message)`.
 
 ---
 
@@ -92,8 +101,13 @@ import { createEnv, s } from "tiny-typed-env/node";
 
 export const env = createEnv({
   DATABASE_URL: s.url(),
+  TIMEOUT: s.duration({ default: "30s" }),
 });
 ```
+
+Supports nested groups the same way as `loadEnv`.
+
+When `TINY_TYPED_ENV_SKIP_VALIDATION=1` (set by the [CLI](./cli) `example` command), validation is skipped so schema modules can load without real secrets.
 
 ### `loadEnvFile(path?, options?)`
 
@@ -126,4 +140,8 @@ createEnv(schema, { envFile: ".env.production" });
 createEnv(schema, { skipValidation: process.env.CI === "true" });
 ```
 
-`createEnv` also re-exports `loadEnv`, `safeLoadEnv`, and `s`.
+`createEnv` also re-exports `loadEnv`, `safeLoadEnv`, `s`, `parseDuration`, and `parseBytes`.
+
+## CLI
+
+See [CLI](./cli) for `npx tiny-typed-env check` and `example`.

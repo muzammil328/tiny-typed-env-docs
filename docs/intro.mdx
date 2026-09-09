@@ -13,8 +13,10 @@ Works in **Node**, **Bun**, **Deno**, and **Workers**.
 ## Why
 
 - Built-in `s` helpers — zero extra packages
-- Fail at boot with clear error messages
+- Fail at boot with clear error messages (secrets redacted)
 - Full TypeScript inference
+- Nested groups for `env.server.*` / `env.public.*`
+- CLI: `check` and `example`
 - Optional Zod / Valibot / ArkType via Standard Schema
 - Runtime-agnostic core (`loadEnv`) plus Node helper (`createEnv`)
 
@@ -27,15 +29,19 @@ export const env = createEnv({
   DATABASE_URL: s.url(),
   PORT: s.port({ default: 3000 }),
   DEBUG: s.boolean({ default: false }),
+  TIMEOUT: s.duration({ default: "30s" }),
 });
 
 env.PORT; // number
+env.TIMEOUT; // 30000
 ```
 
 ## Next steps
 
 - [Getting Started](./getting-started) — install and first schema
+- [CLI](./cli) — `check` and generate `.env.example`
+- [Nested groups](./nested-groups) — `env.server.*` / `env.public.*`
 - [Schema helpers](./schema) — full `s.*` reference
 - [API](./api) — `loadEnv`, `createEnv`, options
 - [Zod / Valibot / ArkType](./external-schemas) — optional schema libraries
-- [Examples](./examples) — copy-paste app template
+- [Examples](./examples) — copy-paste app templates

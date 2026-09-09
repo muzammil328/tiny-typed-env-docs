@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 8
 title: Examples
 sidebar_label: Examples
 ---
@@ -13,7 +13,7 @@ Copy into `src/env.ts`:
 ```ts
 import { createEnv, s } from "tiny-typed-env/node";
 
-export const env = createEnv({
+export const schema = {
   NODE_ENV: s.enum(["development", "test", "production"], {
     default: "development",
   }),
@@ -24,17 +24,50 @@ export const env = createEnv({
   DEBUG: s.boolean({ default: false }),
   CORS_ORIGINS: s.csv({ default: [] }),
   FEATURE_FLAGS: s.json<Record<string, boolean>>({ default: {} }),
-});
+  TIMEOUT: s.duration({ default: "30s" }),
+  MAX_UPLOAD: s.bytes({ default: "10mb" }),
+};
+
+export const env = createEnv(schema);
 
 export type Env = typeof env;
 ```
 
-Then import elsewhere:
+Then:
+
+```bash
+npx tiny-typed-env check
+npx tiny-typed-env example
+```
 
 ```ts
 import { env } from "./env.js";
 
 console.log(env.PORT);
+console.log(env.TIMEOUT); // 30000
+```
+
+## Nested groups
+
+Full guide: [Nested groups](./nested-groups).
+
+```ts
+import { createEnv, s } from "tiny-typed-env/node";
+
+export const schema = {
+  server: {
+    DATABASE_URL: s.url(),
+    API_KEY: s.string({ min: 8 }),
+  },
+  public: {
+    APP_URL: s.url(),
+  },
+};
+
+export const env = createEnv(schema);
+
+env.server.DATABASE_URL; // process.env.DATABASE_URL
+env.public.APP_URL;
 ```
 
 ## Workers / Deno (no `.env` files)

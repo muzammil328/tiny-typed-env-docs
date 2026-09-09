@@ -14,10 +14,10 @@ const SAMPLE = `import { createEnv, s } from "tiny-typed-env/node";
 export const env = createEnv({
   DATABASE_URL: s.url(),
   PORT: s.port({ default: 3000 }),
-  DEBUG: s.boolean({ default: false }),
+  TIMEOUT: s.duration({ default: "30s" }),
 });
 
-// env.PORT → number`;
+// env.TIMEOUT → 30000`;
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();

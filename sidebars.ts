@@ -4,6 +4,8 @@ const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     'intro',
     'getting-started',
+    'cli',
+    'nested-groups',
     'schema',
     'api',
     'external-schemas',
